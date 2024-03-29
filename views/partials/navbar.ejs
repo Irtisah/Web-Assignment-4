@@ -1,0 +1,26 @@
+<nav class="bg-gray-800 p-8">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-5xl text-white font-bold">Lego Collection</a>
+        <div class="flex space-x-4">
+        </div>
+    </div>  
+</nav>
+
+<div class="navbar-center flex">
+    <ul class="menu menu-horizontal px-1">
+        <li><a class="<%= (page === '/lego/sets') ? 'active' : '' %>" href="/lego/sets">View Collection</a></li>
+        <li><a class="<%= (page === '/about') ? 'active' : '' %>" href="/about">About</a></li>
+    
+        <li>
+            <details>
+                <summary><span class="theme <%= (page === '/lego/sets') ? 'active' : '' %>">Theme</span></summary>
+                <ul class="p-2 bg-base-100 right-0">
+                    <li><a class="<%= (page === '/lego/sets' && theme === 'Technic') ? 'active' : '' %>" href="/lego/sets?theme=Technic">Technic</a></li>
+                    <li><a class="<%= (page === '/lego/sets' && theme === 'Supplemental') ? 'active' : '' %>" href="/lego/sets?theme=Supplemental">Supplemental</a></li>
+                    <li><a class="<%= (page === '/lego/sets' && theme === 'Books') ? 'active' : '' %>" href="/lego/sets?theme=Books">Books</a></li>
+                </ul>
+            </details>
+        </li>
+    </ul>
+</div>
+<br />

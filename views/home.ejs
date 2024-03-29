@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lego Collection</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">  
+    <style>
+        .card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ddd;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .card-content p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navbar', { page: '/home' }) %>
+    <div class="container mx-auto p-8">
+        <div class="hero bg-blue-500 text-white p-8 rounded-lg mb-8">
+            <h1 class="text-4xl font-bold mb-4">"Have a look at all the available lego"</h1>
+            <a href="/lego/sets" class="btn">Full Collection</a>
+        </div>
+        <div class="grid grid-cols-3 gap-8">
+            <div class="card">
+                <img src="https://cdn.rebrickable.com/media/sets/001-1.jpg" alt="Gears Image">
+                <div class="card-content">
+                    <h2 class="text-xl font-semibold">Gears</h2>
+                    <p class="text-sm">Details of set: This set was released in America (USA/CAN) by Samsonite in 1965. It was re-released in 1969 as an educational set (322-4). It was never released in Europe.</p>
+                    <a href="/lego/sets/001-1" class="btn">View Set</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://cdn.rebrickable.com/media/sets/0011-2.jpg" alt="Town Mini-Figures Image">
+                <div class="card-content">
+                    <h2 class="text-xl font-semibold">Town Mini-Figures</h2>
+                    <p class="text-sm">Details of set: There are 3 Minifigs in this inventory, with 3 total quantity.</p>
+                    <a href="/lego/sets/0011-2" class="btn">View Set</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <img src="https://cdn.rebrickable.com/media/sets/0016-1.jpg" alt="Castle Mini Figures Image">
+                <div class="card-content">
+                    <h2 class="text-xl font-semibold">Castle Mini Figures</h2>
+                    <p class="text-sm">Details of set: There are 1 parts in this inventory, with 3 total quantity. The approximate cost of these parts is CA$21.58</p>
+                    <a href="/lego/sets/0016-1" class="btn">View Set</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+

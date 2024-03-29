@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #111111;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .bg-gray-800 {
+            background-color: #1e202b;
+        }
+        .text-white {
+            color: #fff;
+        }
+        .font-bold {
+            font-weight: bold;
+        }
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+        .space-x-4 > * + * {
+            margin-left: 1rem;
+        }
+        .p-4 {
+            padding: 1rem;
+        }
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+        .text-lg {
+            font-size: 1.125rem;
+        }
+        .container.mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .p-8 {
+            padding: 2rem;
+        }
+        .hero {
+            background-color: #4a90e2;
+        }
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+        .grid {
+            display: grid;
+        }
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .gap-8 {
+            gap: 2rem;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navbar', { page: '/about' }) %>
+    <div class="container mx-auto p-8">
+        <div class="hero bg-blue-500 text-white p-8 rounded-lg mb-8">
+            <h1 class="text-4xl font-bold mb-4"></h1>
+            <p class="text-lg">About: all about me</p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+            <div>
+                <img src="https://images.pexels.com/photos/1148399/pexels-photo-1148399.jpeg?cs=srgb&dl=background-book-stack-books-1148399.jpg&fm=jpg" alt="Image">
+            </div>
+            <div>
+                <p class="text-lg">I like reading books and going on long walks,</p>
+                <p class="text-lg">I am studying Computer Programming And Analysis.</p>
+                <p class="text-lg">The courses I am taking are WEB322, DBS311, OOP345, SYD366 and FLM278.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

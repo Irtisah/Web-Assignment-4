@@ -78,7 +78,7 @@
                 <tr>
                     <td><img src="<%= set.img_url %>" alt="<%= set.name %>" class="w-16 h-16"></td>
                     <td><%= set.name %></td>
-                    <td><a href="/lego/sets?theme=<%= set.theme %>" class="btn"><%= set.theme %></a></td>
+                    <td><a href="/lego/sets?theme=<%= set.Theme.name %>" class="btn"><%= set.Theme.name %></a></td>
                     <td><%= set.year %></td>
                     <td><%= set.num_parts %></td>
                     <td><a href="/lego/sets/<%= set.set_num %>" class="btn">Details</a></td>

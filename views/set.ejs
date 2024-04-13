@@ -91,7 +91,7 @@
     <div class="container mx-auto">
         <img src="<%= set.img_url %>" alt="<%= set.name %>" class="w-64 h-64 mb-4">
         <p><strong>Year:</strong> <%= set.year %></p>
-        <p><strong>Theme:</strong> <%= set.theme %></p>
+        <p><strong>Theme:</strong> <%= set.Theme.name %></p>
         <p><strong>Parts:</strong> <%= set.num_parts %></p>
         <blockquote id="quote"></blockquote>
         <button onclick="history.back(); return false;" class="btn">Back</button>

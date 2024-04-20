@@ -9,8 +9,8 @@
  *  Name: __Irtisah Malik____________________ Student ID: ____154200224_________ Date: __19 April 2024____________
  * 
  * 
- * GitHub Repository URL: _____________________________________________________
- * Deployed Application URL: __________________________________________________
+ * GitHub Repository URL: _______https://github.com/Irtisah/Web-Assignment-4______________________________________________
+ * Deployed Application URL: ____https://web-assignment-6.onrender.com______________________________________________
  * 
  *********************************************************************************/
 

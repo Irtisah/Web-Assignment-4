@@ -1,128 +1,99 @@
-const { Sequelize, DataTypes, Op } = require('sequelize');
-const fs = require('fs').promises;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  }
+
+const themeSchema = new Schema({
+  name: { type: String, required: true }
 });
 
-const Theme = sequelize.define('Theme', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: DataTypes.STRING
-  }
-}, {
-  timestamps: false
+const setSchema = new Schema({
+  set_num: { type: String, required: true, unique: true },
+  name: { type: String, required: true },
+  year: Number,
+  num_parts: Number,
+  theme: { type: Schema.Types.ObjectId, ref: 'Theme' },
+  img_url: String
 });
 
-const Set = sequelize.define('Set', {
-  set_num: {
-    type: DataTypes.STRING,
-    primaryKey: true
-  },
-  name: {
-    type: DataTypes.STRING
-  },
-  year: {
-    type: DataTypes.INTEGER
-  },
-  num_parts: {
-    type: DataTypes.INTEGER
-  },
-  theme_id: {
-    type: DataTypes.INTEGER
-  },
-  img_url: {
-    type: DataTypes.STRING
-  }
-}, {
-  timestamps: false
-});
+const Theme = mongoose.model('Theme', themeSchema);
+const Set = mongoose.model('Set', setSchema);
 
-Set.belongsTo(Theme, { foreignKey: 'theme_id' });
-
-const initialize = async () => {
+async function initialize() {
   try {
-    await sequelize.sync();
+    await mongoose.connect(process.env.DB_CONNECTION_STRING);
+    console.log("Connecting to MongoDB Atlas");
 
-    const themeData = JSON.parse(await fs.readFile('themeData.json', 'utf8'));
-    const setData = JSON.parse(await fs.readFile('setData.json', 'utf8'));
+    await Theme.deleteMany({});
+    await Set.deleteMany({});
 
-    const themes = await Theme.findAll();
-    if (themes.length === 0) {
-      for (const theme of themeData) {
-        await Theme.create(theme);
-      }
-    }
+    const themes = require('../data/themeData.json');
+    const themeDocs = await Theme.insertMany(themes);
 
-    const sets = await Set.findAll();
-    if (sets.length === 0) {
-      for (const set of setData) {
-        await Set.create(set);
-      }
-    }
+    const sets = require('../data/setData.json').map(set => {
+      return {
+        ...set,
+        theme: themeDocs.find(theme => theme.name === set.theme).id
+      };
+    });
 
-    console.log('Database initialized successfully');
+    await Set.insertMany(sets);
+    console.log('Database initialized and data loaded successfully');
   } catch (err) {
     console.error('Initialization cannot be completed:', err.message);
-  }
-};
-
-const getAllSets = () => {
-  return Set.findAll({ include: [Theme] });
-};
-
-const getSetByNum = (setNum) => {
-  return Set.findOne({ where: { set_num: setNum }, include: [Theme] });
-};
-
-const getSetsByTheme = async (themeName) => {
-  try {
-    const theme = await Theme.findOne({
-      where: { name: { [Op.iLike]: `%${themeName}%` } }
-    });
-
-    if (!theme) {
-      return [];
-    }
-
-    const sets = await Set.findAll({
-      include: [Theme],
-      where: { theme_id: theme.id }
-    });
-
-    return sets;
-  } catch (error) {
-    console.error('Error retrieving sets by theme:', error);
-    throw error;
-  }
-};
-
-async function insertDataFromJSON() {
-  try {
-    const setsData = JSON.parse(await fs.readFile(`${__dirname}/../data/setData.json`, 'utf8'));
-    const themesData = JSON.parse(await fs.readFile(`${__dirname}/../data/themeData.json`, 'utf8'));
-
-    for (const theme of themesData) {
-      await Theme.findOrCreate({ where: { id: theme.id }, defaults: theme });
-    }
-
-    for (const set of setsData) {
-      await Set.findOrCreate({ where: { set_num: set.set_num }, defaults: set });
-    }
-    console.log('Data has been inserted successfully.');
-  } catch (error) {
-    console.error('Error occurred in inserting data:', error);
+  } finally {
+    await mongoose.disconnect();
   }
 }
 
-module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme, insertDataFromJSON };
+async function getAllSets() {
+  return Set.find().populate('theme');
+}
+
+async function getSetByNum(setNum) {
+  return Set.findOne({ set_num: setNum }).populate('theme');
+}
+
+async function getSetsByTheme(themeName) {
+  return Set.find().populate({
+    path: 'theme',
+    match: { name: { $regex: new RegExp(themeName, 'i') } }
+  });
+}
+
+async function loadInitialData() {
+  try {
+    console.log("Connecting to MongoDB...");
+    await mongoose.connect(process.env.DB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Connection established");
+
+    console.log("Deleting old data...");
+    await Theme.deleteMany({});
+    await Set.deleteMany({});
+
+    const themes = require('../data/themeData.json');
+    const themeDocs = await Theme.insertMany(themes);
+    
+    const sets = require('../data/setData.json').map(set => {
+      return {
+        ...set,
+        theme: themeDocs.find(theme => theme.name === set.theme).id
+      };
+    });
+
+    await Set.insertMany(sets);
+
+    console.log('Data successfully loaded!');
+  } catch (error) {
+    console.error('Error loading data:', error);
+  } finally {
+    await mongoose.disconnect();
+    console.log("Disconnected from MongoDB");
+  }
+}
+
+
+
+module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme, loadInitialData };
